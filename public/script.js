@@ -65,25 +65,38 @@ const showError = (inputId, message) => {
     const input = document.getElementById(inputId);
     const errorElement = document.getElementById(inputId + 'Error');
     
-    input.classList.add('error');
-    input.classList.remove('success');
-    errorElement.textContent = message;
-    errorElement.classList.add('show');
+    if (input) {
+        input.classList.add('error');
+        input.classList.remove('success');
+    }
+    
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+    }
 };
 
 const clearError = (inputId) => {
     const input = document.getElementById(inputId);
     const errorElement = document.getElementById(inputId + 'Error');
     
-    input.classList.remove('error');
-    errorElement.textContent = '';
-    errorElement.classList.remove('show');
+    if (input) {
+        input.classList.remove('error');
+    }
+    
+    if (errorElement) {
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
+    }
 };
 
 const showSuccess = (inputId) => {
     const input = document.getElementById(inputId);
-    input.classList.add('success');
-    input.classList.remove('error');
+    
+    if (input) {
+        input.classList.add('success');
+        input.classList.remove('error');
+    }
 };
 
 // ===== VALIDATION FUNCTIONS =====
