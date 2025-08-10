@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VietHub - Đăng nhập & Đăng ký</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Đang xử lý...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Main Container -->
+    <div class="auth-container">
+        <!-- Background Elements -->
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+
+        <!-- Auth Card -->
+        <div class="auth-card">
+            <!-- Logo & Brand -->
+            <div class="brand-section">
+                <div class="logo">
+                    <i class="fas fa-globe-asia"></i>
+                </div>
+                <h1 class="brand-title">VietHub</h1>
+                <p class="brand-subtitle">Kết nối cộng đồng Việt Nam</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng nhập
+                </button>
+                <button class="tab-btn" data-tab="register">
+                    <i class="fas fa-user-plus"></i>
+                    Đăng ký
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="form-container active">
+                <form class="auth-form" id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginEmail">Email hoặc tên đăng nhập</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="text" id="loginEmail" name="email" required>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="error-message" id="loginEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Mật khẩu</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="loginPassword" name="password" required>
+                            <button type="button" class="password-toggle" data-target="loginPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            Ghi nhớ đăng nhập
+                        </label>
+                        <a href="#" class="forgot-password" id="forgotPasswordLink">Quên mật khẩu?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span class="btn-text">Đăng nhập</span>
+                        <div class="btn-loader hidden">
+                            <div class="btn-spinner"></div>
+                        </div>
+                    </button>
+                </form>
+
+                <!-- Social Login -->
+                <div class="social-divider">
+                    <span>hoặc</span>
+                </div>
+
+                <div class="social-buttons">
+                    <button class="social-btn google-btn" id="googleLogin">
+                        <i class="fab fa-google"></i>
+                        Đăng nhập với Google
+                    </button>
+                    <button class="social-btn facebook-btn" id="facebookLogin">
+                        <i class="fab fa-facebook-f"></i>
+                        Đăng nhập với Facebook
+                    </button>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="form-container">
+                <form class="auth-form" id="registerFormElement">
+                    <div class="form-group">
+                        <label for="registerName">Họ và tên</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="registerName" name="name" required>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="error-message" id="registerNameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="registerEmail" name="email" required>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="error-message" id="registerEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Mật khẩu</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="registerPassword" name="password" required>
+                            <button type="button" class="password-toggle" data-target="registerPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bar">
+                                <div class="strength-fill"></div>
+                            </div>
+                            <span class="strength-text">Độ mạnh mật khẩu</span>
+                        </div>
+                        <div class="error-message" id="registerPasswordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Xác nhận mật khẩu</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                            <button type="button" class="password-toggle" data-target="confirmPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="error-message" id="confirmPasswordError"></div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <span class="checkmark"></span>
+                            Tôi đồng ý với <a href="#" class="terms-link">Điều khoản sử dụng</a> và <a href="#" class="privacy-link">Chính sách bảo mật</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span class="btn-text">Tạo tài khoản</span>
+                        <div class="btn-loader hidden">
+                            <div class="btn-spinner"></div>
+                        </div>
+                    </button>
+                </form>
+
+                <!-- Social Register -->
+                <div class="social-divider">
+                    <span>hoặc</span>
+                </div>
+
+                <div class="social-buttons">
+                    <button class="social-btn google-btn" id="googleRegister">
+                        <i class="fab fa-google"></i>
+                        Đăng ký với Google
+                    </button>
+                    <button class="social-btn facebook-btn" id="facebookRegister">
+                        <i class="fab fa-facebook-f"></i>
+                        Đăng ký với Facebook
+                    </button>
+                </div>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div id="forgotPasswordForm" class="form-container">
+                <div class="form-header">
+                    <button class="back-btn" id="backToLogin">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2>Quên mật khẩu</h2>
+                    <p>Nhập email của bạn để nhận liên kết đặt lại mật khẩu</p>
+                </div>
+
+                <form class="auth-form" id="forgotPasswordFormElement">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="forgotEmail" name="email" required>
+                            <div class="input-border"></div>
+                        </div>
+                        <div class="error-message" id="forgotEmailError"></div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span class="btn-text">Gửi liên kết đặt lại</span>
+                        <div class="btn-loader hidden">
+                            <div class="btn-spinner"></div>
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p>&copy; 2024 VietHub. Tất cả quyền được bảo lưu.</p>
+            <div class="footer-links">
+                <a href="#">Trợ giúp</a>
+                <a href="#">Liên hệ</a>
+                <a href="#">Chính sách</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
