@@ -98,11 +98,13 @@ body {
     justify-content: center;
     z-index: 9999;
     transition: opacity var(--transition-normal);
+    pointer-events: all;
 }
 
 .loading-overlay.hidden {
     opacity: 0;
     pointer-events: none;
+    visibility: hidden;
 }
 
 .loading-spinner {

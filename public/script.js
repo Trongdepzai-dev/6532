@@ -301,9 +301,9 @@ const setupPasswordToggle = () => {
 
 // ===== FORM SUBMISSIONS =====
 const handleLogin = async (formData) => {
-    showLoading();
-    
     try {
+        showLoading();
+        
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 2000));
         
@@ -321,6 +321,7 @@ const handleLogin = async (formData) => {
             showToast('Email hoặc mật khẩu không chính xác', 'error', 'Đăng nhập thất bại');
         }
     } catch (error) {
+        console.error('Login error:', error);
         showToast('Có lỗi xảy ra, vui lòng thử lại', 'error', 'Lỗi hệ thống');
     } finally {
         hideLoading();
@@ -328,9 +329,9 @@ const handleLogin = async (formData) => {
 };
 
 const handleRegister = async (formData) => {
-    showLoading();
-    
     try {
+        showLoading();
+        
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 2500));
         
@@ -344,6 +345,7 @@ const handleRegister = async (formData) => {
         }, 1500);
         
     } catch (error) {
+        console.error('Register error:', error);
         showToast('Có lỗi xảy ra, vui lòng thử lại', 'error', 'Lỗi hệ thống');
     } finally {
         hideLoading();
@@ -351,9 +353,9 @@ const handleRegister = async (formData) => {
 };
 
 const handleForgotPassword = async (formData) => {
-    showLoading();
-    
     try {
+        showLoading();
+        
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1500));
         
@@ -366,6 +368,7 @@ const handleForgotPassword = async (formData) => {
         }, 2000);
         
     } catch (error) {
+        console.error('Forgot password error:', error);
         showToast('Có lỗi xảy ra, vui lòng thử lại', 'error', 'Lỗi hệ thống');
     } finally {
         hideLoading();
@@ -374,18 +377,24 @@ const handleForgotPassword = async (formData) => {
 
 // ===== SOCIAL LOGIN =====
 const handleSocialLogin = (provider) => {
-    showLoading();
-    
-    // Simulate social login
-    setTimeout(() => {
-        hideLoading();
-        showToast(`Đăng nhập với ${provider} thành công!`, 'success', 'Chào mừng');
+    try {
+        showLoading();
         
-        // Redirect to dashboard
+        // Simulate social login
         setTimeout(() => {
-            window.location.href = '/dashboard.html';
-        }, 1500);
-    }, 2000);
+            hideLoading();
+            showToast(`Đăng nhập với ${provider} thành công!`, 'success', 'Chào mừng');
+            
+            // Redirect to dashboard
+            setTimeout(() => {
+                window.location.href = '/dashboard.html';
+            }, 1500);
+        }, 2000);
+    } catch (error) {
+        console.error('Social login error:', error);
+        hideLoading();
+        showToast('Có lỗi xảy ra với đăng nhập mạng xã hội', 'error', 'Lỗi hệ thống');
+    }
 };
 
 // ===== FORM VALIDATION =====
@@ -614,12 +623,29 @@ const debounce = (func, wait) => {
 // ===== ERROR HANDLING =====
 window.addEventListener('error', (e) => {
     console.error('JavaScript Error:', e.error);
-    showToast('Có lỗi không mong muốn xảy ra', 'error', 'Lỗi hệ thống');
+    hideLoading(); // Đảm bảo tắt loading khi có lỗi
+    showToast('Có lỗi không mong muốn xảy ra. Vui lòng tải lại trang.', 'error', 'Lỗi hệ thống');
 });
 
 window.addEventListener('unhandledrejection', (e) => {
     console.error('Unhandled Promise Rejection:', e.reason);
-    showToast('Có lỗi không mong muốn xảy ra', 'error', 'Lỗi hệ thống');
+    hideLoading(); // Đảm bảo tắt loading khi có lỗi
+    showToast('Có lỗi không mong muốn xảy ra. Vui lòng tải lại trang.', 'error', 'Lỗi hệ thống');
+});
+
+// ===== NETWORK ERROR HANDLING =====
+const handleNetworkError = () => {
+    hideLoading();
+    showToast('Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng.', 'error', 'Lỗi kết nối');
+};
+
+// Kiểm tra kết nối mạng
+window.addEventListener('online', () => {
+    showToast('Kết nối mạng đã được khôi phục', 'success', 'Đã kết nối');
+});
+
+window.addEventListener('offline', () => {
+    showToast('Mất kết nối mạng. Vui lòng kiểm tra kết nối internet.', 'warning', 'Mất kết nối');
 });
 
 // ===== EXPORT FOR TESTING =====
